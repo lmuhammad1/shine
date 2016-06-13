@@ -97,7 +97,7 @@ describe("CustomerSearchController", function() {
       httpBackend.flush();
       expect(scope.customers).toEqualData([]);
       expect(window.alert).toHaveBeenCalledWith(
-        "Oh Noes! There was a problem: 500");
+        "There was a problem: 500");
     });
   });
 
