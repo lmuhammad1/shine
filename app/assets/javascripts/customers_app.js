@@ -2,6 +2,7 @@ var app = angular.module(
     'customers',
     [
     'ngRoute',
+    'ngResource',
     'templates'
     ]
     ); 
@@ -58,21 +59,19 @@ app.controller("CustomerSearchController", [
     }
 ]);
 app.controller("CustomerDetailController", [ 
-          "$scope","$http","$routeParams",
-  function($scope , $http , $routeParams) {
-
-    // Make the Ajax call and set $scope.customer...
-
+          "$scope","$routeParams","$resource",
+  function($scope , $routeParams , $resource) {
     var customerId = $routeParams.id;
-    $scope.customer = {};
+    var Customer = $resource('/customers/:customerId.json')
 
-    $http.get(
-      "/customers/" + customerId + ".json"
-    ).then(function(response) {
-        $scope.customer = response.data;
-      },function(response) {
-        alert("There was a problem: " + response.status);
-      }
-    );
+    $scope.customer = Customer.get({ "customerId": customerId})
+    alert("Ajax Call Initiated!");
+
+    $scope.customer.billingSameAsShipping = false;
+    $scope.$watch('customer.billing_address_id',function() {
+      $scope.customer.billingSameAsShipping = 
+        $scope.customer.billing_address_id == 
+          $scope.customer.shipping_address_id;
+    });
   }
 ]);
