@@ -65,7 +65,6 @@ app.controller("CustomerDetailController", [
     var Customer = $resource('/customers/:customerId.json')
 
     $scope.customer = Customer.get({ "customerId": customerId})
-    alert("Ajax Call Initiated!");
 
     $scope.customer.billingSameAsShipping = false;
     $scope.$watch('customer.billing_address_id',function() {
